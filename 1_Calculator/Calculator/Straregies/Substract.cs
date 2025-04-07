@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Calculator.Straregies
+﻿namespace Calculator.Straregies
 {
     internal class Substract : ICalculate
     {
         private readonly double _num1;
         private readonly double _num2;
-        public Substract(double num1, double num2)
+        public Substract( double num1, double num2 )
         {
             _num1 = num1;
             _num2 = num2;
