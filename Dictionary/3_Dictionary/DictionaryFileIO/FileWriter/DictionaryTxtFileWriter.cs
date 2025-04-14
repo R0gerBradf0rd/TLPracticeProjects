@@ -1,10 +1,10 @@
 ﻿namespace Dictionary.DictionaryFileIO.FileWriter
 {
-    public class DictionaryFileWriter : IDictionaryWriter
+    public class DictionaryTxtFileWriter : IDictionaryWriter
     {
         private readonly char _dictionarySeparator;
 
-        public DictionaryFileWriter( char dictionarySeparator )
+        public DictionaryTxtFileWriter( char dictionarySeparator )
         {
             _dictionarySeparator = dictionarySeparator;
         }

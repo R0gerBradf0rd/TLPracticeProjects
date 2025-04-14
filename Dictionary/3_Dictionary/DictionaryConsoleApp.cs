@@ -12,6 +12,7 @@ namespace Dictionary
         private const string _theTranslation = "Перевод вашего слова: ";
         private const string _enterTheTranslation = "Введите перевод: ";
         private const string _addNewWord = "Ваше слово не найдено в словаре(\nЖелаете его добавить?";
+        private const string _theWordAlreadyExist = "Данное слово уже есть в словаре!\n";
 
         private Dictionary<string, string> _enRuDictionary = new Dictionary<string, string>();
         private Dictionary<string, string> _ruEnDictionary = new Dictionary<string, string>();
@@ -21,7 +22,7 @@ namespace Dictionary
         {
             _dictionaryFilePath = dictionaryFilePath;
             _dictionarySeparator = dictionarySeparator;
-            IDictionaryReader fileReader = new DictionaryFileReader( _dictionaryFilePath );
+            IDictionaryReader fileReader = new DictionaryTxtFileReader( _dictionaryFilePath );
             fileReader.ReadDictionary( _dictionarySeparator, _enRuDictionary, _ruEnDictionary );
         }
 
@@ -131,14 +132,21 @@ namespace Dictionary
 
         private void AddWord( string userWord, Dictionary<string, string> dictionary, Dictionary<string, string> dictionaryReversed )
         {
+            IConsoleMenuManager addWord = new ConsoleMenuManager( PromtsAndOptions.AddWordMenuPromt(), PromtsAndOptions.AddWordMenuOptions() );
+
             Console.Clear();
             Console.Write( _enterTheTranslation );
             string userInput = Console.ReadLine();
 
-            dictionary.Add( userInput, userWord );
-            dictionaryReversed.Add( userWord, userInput );
-
-            IConsoleMenuManager addWord = new ConsoleMenuManager( PromtsAndOptions.AddWordMenuPromt(), PromtsAndOptions.AddWordMenuOptions() );
+            if ( dictionary.ContainsKey( userInput ) && dictionaryReversed.ContainsKey( userWord ) )
+            {
+                dictionary.Add( userInput, userWord );
+                dictionaryReversed.Add( userWord, userInput );
+            }
+            else
+            {
+                addWord.UpdatePromt( _theWordAlreadyExist );
+            }
 
             int selectedIndex = addWord.GetSelectedIndex();
 
@@ -176,7 +184,7 @@ namespace Dictionary
 
         private void Exit()
         {
-            IDictionaryWriter fileWriter = new DictionaryFileWriter( _dictionarySeparator );
+            IDictionaryWriter fileWriter = new DictionaryTxtFileWriter( _dictionarySeparator );
             fileWriter.WriteDictionary( _dictionaryFilePath, _enRuDictionary );
             Console.Clear();
             Console.WriteLine( "You exited the app" );
