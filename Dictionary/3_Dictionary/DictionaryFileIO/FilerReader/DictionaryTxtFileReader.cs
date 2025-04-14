@@ -1,10 +1,10 @@
 ﻿namespace Dictionary.DictionaryFileIO.FilerReader
 {
-    public class DictionaryFileReader : IDictionaryReader
+    public class DictionaryTxtFileReader : IDictionaryReader
     {
         private readonly string _filePath;
 
-        public DictionaryFileReader( string filePath )
+        public DictionaryTxtFileReader( string filePath )
         {
             _filePath = filePath;
         }

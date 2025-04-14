@@ -65,7 +65,7 @@
 
         public void UpdatePromt( string newPromt )
         {
-            _promt = _promt + newPromt;
+            _promt = newPromt;
         }
 
         public void UpdateOptions( string[] newOptions )
