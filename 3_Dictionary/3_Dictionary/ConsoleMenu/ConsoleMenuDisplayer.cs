@@ -1,12 +1,12 @@
 ﻿namespace Dictionary.ConsoleMenu
 {
-    public class ConsoleMenuManager : IConsoleMenuManager
+    public class ConsoleMenuDisplayer : IConsoleMenuDisplayer
     {
         private int _selectedIndex;
         private string[] _options;
         private string _promt;
 
-        public ConsoleMenuManager( string promt, string[] options )
+        public ConsoleMenuDisplayer( string promt, string[] options )
         {
             _promt = promt;
             _options = options;
@@ -71,6 +71,7 @@
         public void UpdateOptions( string[] newOptions )
         {
             _options = newOptions;
+            _selectedIndex = 0;
         }
     }
 }

@@ -24,7 +24,7 @@
 
         public static string[] DictionaryNoWordMenuOptions()
         {
-            return new string[] { "Добавить слово в словарь", "Ввести еще одно слово", "Главное меню" };
+            return new string[] { "Ввести еще одно слово", "Главное меню", "Добавить слово в словарь" };
         }
 
         public static string AboutMenuPromt()

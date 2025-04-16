@@ -8,19 +8,29 @@
         {
             _filePath = filePath;
         }
-        public void ReadDictionary( char dictionarySeparator, Dictionary<string, string> txtDictionary, Dictionary<string, string> txtDictionaryReversed )
+        public void ReadDictionary( char dictionarySeparator, Dictionary<string, string> txtDictionary )
         {
-            string[] lines = File.ReadAllLines( _filePath );
-
-            foreach ( string line in lines )
+            if ( !File.Exists( _filePath ) )
             {
-                string[] words = line.Split( dictionarySeparator );
-                if ( !txtDictionary.ContainsKey( words[ 0 ] ) )
+                throw new Exception( "Неверно уазан путь к словрю" );
+            }
+            else
+            {
+                string[] lines = File.ReadAllLines( _filePath );
+
+                foreach ( string line in lines )
                 {
-                    txtDictionary.Add( words[ 0 ], words[ 1 ] );
-                    txtDictionaryReversed.Add( words[ 1 ], words[ 0 ] );
+                    string[] words = line.Split( dictionarySeparator );
+                    if ( txtDictionary.ContainsKey( words[ 0 ] ) )
+                        throw new Exception( "Больше одного значения по одному ключу" );
+                    else
+                    {
+                        if ( words.Length < 2 )
+                            throw new Exception( "Неверный формат словоря" );
+                        else
+                            txtDictionary.Add( words[ 0 ].ToLower(), words[ 1 ].ToLower() );
+                    }
                 }
-                else continue;
             }
         }
     }

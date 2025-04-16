@@ -1,29 +1,24 @@
 ﻿using Dictionary.ConsoleMenu;
+using Dictionary.Entitys;
 using Dictionary.DictionaryFileIO.FilerReader;
 using Dictionary.DictionaryFileIO.FileWriter;
+using Dictionary.DictionaryMenuMediator;
+using Dictionary.ConsoleMenu.MenuOptions;
 
 namespace Dictionary
 {
     public class DictionaryConsoleApp
     {
-        private readonly string _dictionaryFilePath;
-        private readonly char _dictionarySeparator;
-        private const string _enterTheWord = "Введите слово: ";
-        private const string _theTranslation = "Перевод вашего слова: ";
-        private const string _enterTheTranslation = "Введите перевод: ";
-        private const string _addNewWord = "Ваше слово не найдено в словаре(\nЖелаете его добавить?";
-        private const string _theWordAlreadyExist = "Данное слово уже есть в словаре!\n";
 
-        private Dictionary<string, string> _enRuDictionary = new Dictionary<string, string>();
-        private Dictionary<string, string> _ruEnDictionary = new Dictionary<string, string>();
+        private IConsoleMenuDisplayer _menuDisplayer = new ConsoleMenuDisplayer( "", [] );
+        private IMenuMediator _menuMediator;
 
+        private readonly MainDictionary _mainDictionary;
 
-        public DictionaryConsoleApp( string dictionaryFilePath, char dictionarySeparator )
+        public DictionaryConsoleApp( MainDictionary mainDictionary )
         {
-            _dictionaryFilePath = dictionaryFilePath;
-            _dictionarySeparator = dictionarySeparator;
-            IDictionaryReader fileReader = new DictionaryTxtFileReader( _dictionaryFilePath );
-            fileReader.ReadDictionary( _dictionarySeparator, _enRuDictionary, _ruEnDictionary );
+            mainDictionary.FillTheLocalDictionary();
+            _mainDictionary = mainDictionary;
         }
 
         public void Start()
@@ -36,11 +31,9 @@ namespace Dictionary
 
         private void MainMenu()
         {
-            IConsoleMenuManager mainMenu = new ConsoleMenuManager( PromtsAndOptions.MainMenuPromt(), PromtsAndOptions.MainMenuOptions() );
+            _menuMediator = new MainMenu( _menuDisplayer );
 
-            int selectedIndex = mainMenu.GetSelectedIndex();
-
-            switch ( selectedIndex )
+            switch ( _menuMediator.RunMenu() )
             {
                 case 0:
                     DictionaryMenu();
@@ -61,96 +54,32 @@ namespace Dictionary
 
         private void DictionaryMenu()
         {
-            Console.Clear();
-            IConsoleMenuManager dictionaryMenu = new ConsoleMenuManager( PromtsAndOptions.DictionaryMenuPromt(), PromtsAndOptions.DictionaryMenuOptions() );
+            IDictionaryMenuMediator menu = new DictionaryMenu( _menuDisplayer, _mainDictionary );
 
-            Console.Write( _enterTheWord );
-            string userInput = Console.ReadLine();
-            string newPromt = _enterTheWord + userInput + "\n";
-
-            bool isWordInDictionary;
-            if ( _enRuDictionary.ContainsKey( userInput ) )
+            switch ( menu.RunMenu() )
             {
-                Console.WriteLine( $"{_theTranslation}{_enRuDictionary[ userInput ]}" );
-                newPromt = newPromt + _theTranslation + _enRuDictionary[ userInput ] + "\n";
-                isWordInDictionary = true;
+                case 0:
+                    DictionaryMenu();
+                    break;
+
+                case 1:
+                    MainMenu();
+                    break;
+                case 2:
+                    AddWord( menu.TheWordOutOfDictionary(), _mainDictionary );
+                    break;
+
+                default:
+                    break;
             }
-            else if ( _enRuDictionary.ContainsValue( userInput ) )
-            {
-                Console.WriteLine( $"Перевод: {_ruEnDictionary[ userInput ]}" );
-                newPromt = newPromt + _theTranslation + _ruEnDictionary[ userInput ] + "\n";
-                isWordInDictionary = true;
-            }
-            else
-                isWordInDictionary = false;
 
-            if ( isWordInDictionary )
-            {
-                dictionaryMenu.UpdatePromt( newPromt );
-                int selectedIndex = dictionaryMenu.GetSelectedIndex();
-
-                switch ( selectedIndex )
-                {
-                    case 0:
-                        DictionaryMenu();
-                        break;
-
-                    case 1:
-                        MainMenu();
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-            else
-            {
-                newPromt = _addNewWord + "\n";
-                dictionaryMenu.UpdatePromt( newPromt );
-                dictionaryMenu.UpdateOptions( PromtsAndOptions.DictionaryNoWordMenuOptions() );
-                int selectedIndex = dictionaryMenu.GetSelectedIndex();
-
-                switch ( selectedIndex )
-                {
-                    case 0:
-                        AddWord( userInput, _enRuDictionary, _ruEnDictionary );
-                        break;
-
-                    case 1:
-                        DictionaryMenu();
-                        break;
-
-                    case 2:
-                        MainMenu();
-                        break;
-
-                    default:
-                        break;
-                }
-            }
         }
 
-        private void AddWord( string userWord, Dictionary<string, string> dictionary, Dictionary<string, string> dictionaryReversed )
+        private void AddWord( string userWord, MainDictionary mainDictionary )
         {
-            IConsoleMenuManager addWord = new ConsoleMenuManager( PromtsAndOptions.AddWordMenuPromt(), PromtsAndOptions.AddWordMenuOptions() );
+            _menuMediator = new AddWord( _menuDisplayer, userWord, mainDictionary );
 
-            Console.Clear();
-            Console.Write( _enterTheTranslation );
-            string userInput = Console.ReadLine();
-
-            if ( dictionary.ContainsKey( userInput ) && dictionaryReversed.ContainsKey( userWord ) )
-            {
-                dictionary.Add( userInput, userWord );
-                dictionaryReversed.Add( userWord, userInput );
-            }
-            else
-            {
-                addWord.UpdatePromt( _theWordAlreadyExist );
-            }
-
-            int selectedIndex = addWord.GetSelectedIndex();
-
-            switch ( selectedIndex )
+            switch ( _menuMediator.RunMenu() )
             {
                 case 0:
                     DictionaryMenu();
@@ -167,11 +96,9 @@ namespace Dictionary
 
         private void AboutMenu()
         {
-            IConsoleMenuManager aboutMenu = new ConsoleMenuManager( PromtsAndOptions.AboutMenuPromt(), PromtsAndOptions.AboutMenuOptions() );
+            _menuMediator = new AboutMenu( _menuDisplayer );
 
-            int selectedIndex = aboutMenu.GetSelectedIndex();
-
-            switch ( selectedIndex )
+            switch ( _menuMediator.RunMenu() )
             {
                 case 0:
                     MainMenu();
@@ -184,8 +111,7 @@ namespace Dictionary
 
         private void Exit()
         {
-            IDictionaryWriter fileWriter = new DictionaryTxtFileWriter( _dictionarySeparator );
-            fileWriter.WriteDictionary( _dictionaryFilePath, _enRuDictionary );
+            _mainDictionary.FillTheDictionary();
             Console.Clear();
             Console.WriteLine( "You exited the app" );
         }
