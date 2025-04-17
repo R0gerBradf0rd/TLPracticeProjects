@@ -1,13 +1,13 @@
 ﻿/// <summary>
 /// Связывает опции меню между собой
 /// </summary>
-namespace Dictionary.DictionaryMenuMediator
+namespace Dictionary.ConsoleMenu.MenuRunner
 {
-    public interface IMenuMediator
+    public interface IMenuRunner
     {
         /// <summary>
         /// Взовращает пункт выбраной опции
         /// </summary>
-        public int RunMenu();
+        public int GetSelectedIndex();
     }
 }

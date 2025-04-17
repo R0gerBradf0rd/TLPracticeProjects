@@ -1,6 +1,6 @@
-﻿namespace Dictionary.DictionaryMenuMediator
+﻿namespace Dictionary.ConsoleMenu.MenuRunner
 {
-    public interface IDictionaryMenuMediator : IMenuMediator
+    public interface IDictionaryMenuRunner : IMenuRunner
     {
         /// <summary>
         /// Возвращает слово, введеное пользователем, если его нет в словаре

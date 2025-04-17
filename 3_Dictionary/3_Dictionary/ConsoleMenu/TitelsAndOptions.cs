@@ -1,6 +1,6 @@
 ﻿namespace Dictionary.ConsoleMenu
 {
-    public static class PromtsAndOptions
+    public static class TitelsAndOptions
     {
         public static string MainMenuPromt()
         {

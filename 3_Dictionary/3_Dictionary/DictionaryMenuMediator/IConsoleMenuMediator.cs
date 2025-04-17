@@ -1,10 +1,9 @@
 ﻿/// <summary>
 /// Определяет основные методы для отображения и управления консольным меню.
 /// </summary>
-
-namespace Dictionary.ConsoleMenu
+namespace Dictionary.DictionaryMenuMediator
 {
-    public interface IConsoleMenuDisplayer
+    public interface IConsoleMenuMediator
     {
         /// <summary>
         /// Отображает доступные опции меню в консоли
@@ -21,12 +20,29 @@ namespace Dictionary.ConsoleMenu
         /// Обновляет текст заголовка меню
         /// </summary>
         /// <param name="newPromt">Новый текст меню</param>
-        public void UpdatePromt( string newPromt );
+        public void SetTittle( string newPromt );
 
         /// <summary>
         /// Обновляет опции меню
         /// </summary>
         /// <param name="newOptions">Массив новых опций</param>
-        public void UpdateOptions( string[] newOptions );
+        public void SetOptions( string[] newOptions );
+
+        /// <summary>
+        /// Выводит сообщеение в строку
+        /// </summary>
+        /// <param name="message">Сообщение, которое нужно вывести</param>
+        public void WriteMessage( string message );
+
+        /// <summary>
+        /// Выводит сообщение, с переводом на новую строку
+        /// </summary>
+        /// <param name="message">Сообщение, которое нужно вывести</param>
+        public void WriteMessageInNewLine( string message );
+
+        /// <summary>
+        /// Очищает экран
+        /// </summary>
+        public void ClearScreen();
     }
 }

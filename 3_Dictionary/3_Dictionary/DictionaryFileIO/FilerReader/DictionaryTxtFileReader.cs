@@ -14,23 +14,32 @@
             {
                 throw new Exception( "Неверно уазан путь к словрю" );
             }
-            else
-            {
-                string[] lines = File.ReadAllLines( _filePath );
 
-                foreach ( string line in lines )
+            string[] lines;
+
+            try
+            {
+                lines = File.ReadAllLines( _filePath );
+            }
+            catch ( Exception e )
+            {
+                throw new DictionaryFileIOException( _filePath, e.Message );
+            }
+
+            foreach ( string line in lines )
+            {
+                string[] words = line.Split( dictionarySeparator );
+                if ( txtDictionary.ContainsKey( words[ 0 ] ) )
                 {
-                    string[] words = line.Split( dictionarySeparator );
-                    if ( txtDictionary.ContainsKey( words[ 0 ] ) )
-                        throw new Exception( "Больше одного значения по одному ключу" );
-                    else
-                    {
-                        if ( words.Length < 2 )
-                            throw new Exception( "Неверный формат словоря" );
-                        else
-                            txtDictionary.Add( words[ 0 ].ToLower(), words[ 1 ].ToLower() );
-                    }
+                    throw new DictionaryFileIOException( _filePath, "Больше одного значения по одному ключу" );
                 }
+
+                if ( words.Length < 2 )
+                {
+                    throw new Exception( "Неверный формат словоря" );
+                }
+
+                txtDictionary.Add( words[ 0 ].ToLower(), words[ 1 ].ToLower() );
             }
         }
     }

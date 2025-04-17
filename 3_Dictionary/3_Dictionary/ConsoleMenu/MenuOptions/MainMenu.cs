@@ -1,21 +1,26 @@
-﻿using Dictionary.DictionaryMenuMediator;
+﻿using Dictionary.ConsoleMenu.MenuRunner;
+using Dictionary.DictionaryMenuMediator;
 
 namespace Dictionary.ConsoleMenu.MenuOptions
 {
-    public class MainMenu : IMenuMediator
+    public class MainMenu : IMenuRunner
     {
-        private readonly IConsoleMenuDisplayer _menuDisplayer;
-        public MainMenu( IConsoleMenuDisplayer menuDisplayer )
+        private readonly IConsoleMenuMediator _menuMediator;
+        public MainMenu( IConsoleMenuMediator menuMediator )
         {
-            _menuDisplayer = menuDisplayer;
+            _menuMediator = menuMediator;
         }
 
-        public int RunMenu()
+        public void RunMenu()
         {
-            _menuDisplayer.UpdatePromt( PromtsAndOptions.MainMenuPromt() );
-            _menuDisplayer.UpdateOptions( PromtsAndOptions.MainMenuOptions() );
+            _menuMediator.SetTittle( TitelsAndOptions.MainMenuPromt() );
+            _menuMediator.SetOptions( TitelsAndOptions.MainMenuOptions() );
+        }
 
-            return _menuDisplayer.GetSelectedIndex();
+        public int GetSelectedIndex()
+        {
+            RunMenu();
+            return _menuMediator.GetSelectedIndex();
         }
     }
 }

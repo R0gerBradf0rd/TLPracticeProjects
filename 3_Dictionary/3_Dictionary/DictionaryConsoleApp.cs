@@ -1,17 +1,15 @@
-﻿using Dictionary.ConsoleMenu;
-using Dictionary.Entitys;
-using Dictionary.DictionaryFileIO.FilerReader;
-using Dictionary.DictionaryFileIO.FileWriter;
+﻿using Dictionary.ConsoleMenu.MenuOptions;
+using Dictionary.ConsoleMenu.MenuRunner;
 using Dictionary.DictionaryMenuMediator;
-using Dictionary.ConsoleMenu.MenuOptions;
+using Dictionary.Entitys;
 
 namespace Dictionary
 {
     public class DictionaryConsoleApp
     {
 
-        private IConsoleMenuDisplayer _menuDisplayer = new ConsoleMenuDisplayer( "", [] );
-        private IMenuMediator _menuMediator;
+        private IConsoleMenuMediator _menuMediator = new ConsolemenuMediator( "", [] );
+        private IMenuRunner _menuRunner;
 
         private readonly MainDictionary _mainDictionary;
 
@@ -31,9 +29,9 @@ namespace Dictionary
 
         private void MainMenu()
         {
-            _menuMediator = new MainMenu( _menuDisplayer );
+            _menuRunner = new MainMenu( _menuMediator );
 
-            switch ( _menuMediator.RunMenu() )
+            switch ( _menuRunner.GetSelectedIndex() )
             {
                 case 0:
                     DictionaryMenu();
@@ -54,9 +52,9 @@ namespace Dictionary
 
         private void DictionaryMenu()
         {
-            IDictionaryMenuMediator menu = new DictionaryMenu( _menuDisplayer, _mainDictionary );
+            IDictionaryMenuRunner menu = new DictionaryMenu( _menuMediator, _mainDictionary );
 
-            switch ( menu.RunMenu() )
+            switch ( menu.GetSelectedIndex() )
             {
                 case 0:
                     DictionaryMenu();
@@ -77,9 +75,9 @@ namespace Dictionary
 
         private void AddWord( string userWord, MainDictionary mainDictionary )
         {
-            _menuMediator = new AddWord( _menuDisplayer, userWord, mainDictionary );
+            _menuRunner = new AddWord( _menuMediator, userWord, mainDictionary );
 
-            switch ( _menuMediator.RunMenu() )
+            switch ( _menuRunner.GetSelectedIndex() )
             {
                 case 0:
                     DictionaryMenu();
@@ -96,9 +94,9 @@ namespace Dictionary
 
         private void AboutMenu()
         {
-            _menuMediator = new AboutMenu( _menuDisplayer );
+            _menuRunner = new AboutMenu( _menuMediator );
 
-            switch ( _menuMediator.RunMenu() )
+            switch ( _menuRunner.GetSelectedIndex() )
             {
                 case 0:
                     MainMenu();
@@ -112,8 +110,8 @@ namespace Dictionary
         private void Exit()
         {
             _mainDictionary.FillTheDictionary();
-            Console.Clear();
-            Console.WriteLine( "You exited the app" );
+            _menuMediator.ClearScreen();
+            _menuMediator.WriteMessageInNewLine( "You exited the app" );
         }
     }
 }

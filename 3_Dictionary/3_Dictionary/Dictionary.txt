@@ -9,3 +9,5 @@ wind ветер
 storm буря
 cat кот
 no нет
+любовь love
+bird птица

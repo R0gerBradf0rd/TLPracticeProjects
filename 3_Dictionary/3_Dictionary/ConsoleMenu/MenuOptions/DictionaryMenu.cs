@@ -1,12 +1,13 @@
-﻿using Dictionary.DictionaryMenuMediator;
+﻿using Dictionary.ConsoleMenu.MenuRunner;
+using Dictionary.DictionaryMenuMediator;
 using Dictionary.Entitys;
 using Dictionary.UserInput;
 
 namespace Dictionary.ConsoleMenu.MenuOptions
 {
-    public class DictionaryMenu : IDictionaryMenuMediator
+    public class DictionaryMenu : IDictionaryMenuRunner
     {
-        private readonly IConsoleMenuDisplayer _menuDisplayer;
+        private readonly IConsoleMenuMediator _menuMediator;
         private readonly MainDictionary _mainDictionary;
 
         private const string _enterTheWord = "Введите слово: ";
@@ -14,36 +15,40 @@ namespace Dictionary.ConsoleMenu.MenuOptions
         private const string _addNewWord = "Ваше слово не найдено в словаре(\nЖелаете его добавить?";
         private string _userInput;
 
-        public DictionaryMenu( IConsoleMenuDisplayer menuDisplayer, MainDictionary mainDictionary )
+        public DictionaryMenu( IConsoleMenuMediator menuMediator, MainDictionary mainDictionary )
         {
-            _menuDisplayer = menuDisplayer;
+            _menuMediator = menuMediator;
             _mainDictionary = mainDictionary;
         }
-        public int RunMenu()
+        private void RunMenu()
         {
-            _menuDisplayer.UpdatePromt( PromtsAndOptions.DictionaryMenuPromt() );
-            _menuDisplayer.UpdateOptions( PromtsAndOptions.DictionaryMenuOptions() );
+            _menuMediator.SetTittle( TitelsAndOptions.DictionaryMenuPromt() );
+            _menuMediator.SetOptions( TitelsAndOptions.DictionaryMenuOptions() );
 
-            Console.Clear();
-            Console.Write( _enterTheWord );
+            _menuMediator.ClearScreen();
+            _menuMediator.WriteMessage( _enterTheWord );
             _userInput = UserInputCorrector.GetInput();
             string newPromt = _enterTheWord + _userInput + "\n";
 
             if ( _mainDictionary.IsWordInDictionary( _userInput ) )
             {
-                Console.WriteLine( $"{_theTranslation}{_mainDictionary.GetWord( _userInput )}" );
+                _menuMediator.WriteMessageInNewLine( $"{_theTranslation}{_mainDictionary.GetWord( _userInput )}" );
                 newPromt = newPromt + _theTranslation + _mainDictionary.GetWord( _userInput ) + "\n";
 
-                _menuDisplayer.UpdatePromt( newPromt );
+                _menuMediator.SetTittle( newPromt );
             }
             else
             {
                 newPromt = _addNewWord + "\n";
-                _menuDisplayer.UpdatePromt( newPromt );
-                _menuDisplayer.UpdateOptions( PromtsAndOptions.DictionaryNoWordMenuOptions() );
+                _menuMediator.SetTittle( newPromt );
+                _menuMediator.SetOptions( TitelsAndOptions.DictionaryNoWordMenuOptions() );
             }
+        }
 
-            return _menuDisplayer.GetSelectedIndex();
+        public int GetSelectedIndex()
+        {
+            RunMenu();
+            return _menuMediator.GetSelectedIndex();
         }
 
         public string TheWordOutOfDictionary()

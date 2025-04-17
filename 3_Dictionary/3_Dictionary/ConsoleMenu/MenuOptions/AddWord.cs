@@ -1,32 +1,34 @@
 ﻿using System.Collections.Generic;
+using Dictionary.ConsoleMenu.MenuRunner;
 using Dictionary.DictionaryMenuMediator;
 using Dictionary.Entitys;
 using Dictionary.UserInput;
 
 namespace Dictionary.ConsoleMenu.MenuOptions
 {
-    public class AddWord : IMenuMediator
+    public class AddWord : IMenuRunner
     {
-        private readonly IConsoleMenuDisplayer _menuDisplayer;
+        private readonly IConsoleMenuMediator _menuMediator;
         private readonly string _word;
         private readonly MainDictionary _mainDictionary;
 
         private const string _enterTheTranslation = "Введите перевод: ";
         private const string _theWordAlreadyExist = "Данное слово уже есть в словаре!\n";
 
-        public AddWord( IConsoleMenuDisplayer menuDisplayer, string word, MainDictionary mainDictionary )
+        public AddWord( IConsoleMenuMediator menuMediator, string word, MainDictionary mainDictionary )
         {
             _word = word;
             _mainDictionary = mainDictionary;
-            _menuDisplayer = menuDisplayer;
+            _menuMediator = menuMediator;
         }
-        public int RunMenu()
-        {
-            _menuDisplayer.UpdatePromt( PromtsAndOptions.AddWordMenuPromt() );
-            _menuDisplayer.UpdateOptions( PromtsAndOptions.AddWordMenuOptions() );
 
-            Console.Clear();
-            Console.Write( _enterTheTranslation );
+        private void RunMenu()
+        {
+            _menuMediator.SetTittle( TitelsAndOptions.AddWordMenuPromt() );
+            _menuMediator.SetOptions( TitelsAndOptions.AddWordMenuOptions() );
+
+            _menuMediator.ClearScreen();
+            _menuMediator.WriteMessage( _enterTheTranslation );
             string userInput = UserInputCorrector.GetInput();
 
             if ( !_mainDictionary.IsWordInDictionary( userInput ) )
@@ -35,10 +37,14 @@ namespace Dictionary.ConsoleMenu.MenuOptions
             }
             else
             {
-                _menuDisplayer.UpdatePromt( _theWordAlreadyExist );
+                _menuMediator.SetTittle( _theWordAlreadyExist );
             }
+        }
 
-            return _menuDisplayer.GetSelectedIndex();
+        public int GetSelectedIndex()
+        {
+            RunMenu();
+            return _menuMediator.GetSelectedIndex();
         }
     }
 }

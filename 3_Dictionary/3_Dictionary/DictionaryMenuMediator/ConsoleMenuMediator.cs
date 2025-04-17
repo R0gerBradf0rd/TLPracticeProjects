@@ -1,12 +1,12 @@
-﻿namespace Dictionary.ConsoleMenu
+﻿namespace Dictionary.DictionaryMenuMediator
 {
-    public class ConsoleMenuDisplayer : IConsoleMenuDisplayer
+    public class ConsolemenuMediator : IConsoleMenuMediator
     {
         private int _selectedIndex;
         private string[] _options;
         private string _promt;
 
-        public ConsoleMenuDisplayer( string promt, string[] options )
+        public ConsolemenuMediator( string promt, string[] options )
         {
             _promt = promt;
             _options = options;
@@ -49,11 +49,11 @@
                 ConsoleKeyInfo keyInfo = Console.ReadKey();
                 keyPressed = keyInfo.Key;
 
-                if ( ( keyPressed == ConsoleKey.UpArrow ) && ( _selectedIndex > 0 ) )
+                if ( keyPressed == ConsoleKey.UpArrow && _selectedIndex > 0 )
                 {
                     _selectedIndex--;
                 }
-                else if ( ( keyPressed == ConsoleKey.DownArrow ) && ( _selectedIndex < _options.Length - 1 ) )
+                else if ( keyPressed == ConsoleKey.DownArrow && _selectedIndex < _options.Length - 1 )
                 {
                     _selectedIndex++;
                 }
@@ -63,15 +63,30 @@
             return _selectedIndex;
         }
 
-        public void UpdatePromt( string newPromt )
+        public void SetTittle( string newPromt )
         {
             _promt = newPromt;
         }
 
-        public void UpdateOptions( string[] newOptions )
+        public void SetOptions( string[] newOptions )
         {
             _options = newOptions;
             _selectedIndex = 0;
+        }
+
+        public void WriteMessage( string message )
+        {
+            Console.Write( message );
+        }
+
+        public void WriteMessageInNewLine( string message )
+        {
+            Console.WriteLine( message );
+        }
+
+        public void ClearScreen()
+        {
+            Console.Clear();
         }
     }
 }
