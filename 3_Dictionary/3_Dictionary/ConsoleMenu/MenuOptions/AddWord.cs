@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Dictionary.ConsoleMenu.MenuRunner;
+﻿using Dictionary.ConsoleMenu.MenuRunner;
 using Dictionary.DictionaryMenuMediator;
 using Dictionary.Entitys;
 using Dictionary.UserInput;

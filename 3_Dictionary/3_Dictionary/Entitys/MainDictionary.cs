@@ -41,18 +41,26 @@ namespace Dictionary.Entitys
         public bool IsWordInDictionary( string word )
         {
             if ( _dictionary.ContainsKey( word ) )
+            {
                 return true;
+            }
             else if ( _dictionaryReversed.ContainsKey( word ) )
+            {
                 return true;
+            }
             return false;
         }
 
         public string GetWord( string word )
         {
             if ( _dictionary.ContainsKey( word ) )
+            {
                 return _dictionary[ word ];
+            }
             else
+            {
                 return _dictionaryReversed[ word ];
+            }
         }
     }
 }

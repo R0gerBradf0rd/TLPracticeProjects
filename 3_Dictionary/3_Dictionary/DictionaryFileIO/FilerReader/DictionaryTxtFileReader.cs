@@ -12,7 +12,7 @@
         {
             if ( !File.Exists( _filePath ) )
             {
-                throw new Exception( "Неверно уазан путь к словрю" );
+                throw new Exception( "Неверно указан путь к словарю" );
             }
 
             string[] lines;
@@ -36,7 +36,7 @@
 
                 if ( words.Length < 2 )
                 {
-                    throw new Exception( "Неверный формат словоря" );
+                    throw new Exception( "Неверный формат словаря" );
                 }
 
                 txtDictionary.Add( words[ 0 ].ToLower(), words[ 1 ].ToLower() );
