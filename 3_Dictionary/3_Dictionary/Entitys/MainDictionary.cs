@@ -44,10 +44,12 @@ namespace Dictionary.Entitys
             {
                 return true;
             }
-            else if ( _dictionaryReversed.ContainsKey( word ) )
+
+            if ( _dictionaryReversed.ContainsKey( word ) )
             {
                 return true;
             }
+
             return false;
         }
 
@@ -57,10 +59,8 @@ namespace Dictionary.Entitys
             {
                 return _dictionary[ word ];
             }
-            else
-            {
-                return _dictionaryReversed[ word ];
-            }
+
+            return _dictionaryReversed[ word ];
         }
     }
 }

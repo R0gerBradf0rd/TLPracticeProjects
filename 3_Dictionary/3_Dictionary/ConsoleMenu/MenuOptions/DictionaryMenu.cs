@@ -11,6 +11,7 @@ namespace Dictionary.ConsoleMenu.MenuOptions
         private readonly MainDictionary _mainDictionary;
 
         private const string _enterTheWord = "Введите слово: ";
+        private const string _youreWord = "Ваше слово: ";
         private const string _theTranslation = "Перевод вашего слова: ";
         private const string _addNewWord = "Ваше слово не найдено в словаре(\nЖелаете его добавить?";
         private string _userInput;
@@ -28,7 +29,7 @@ namespace Dictionary.ConsoleMenu.MenuOptions
             _menuMediator.ClearScreen();
             _menuMediator.WriteMessage( _enterTheWord );
             _userInput = UserInputCorrector.GetInput();
-            string newPromt = _enterTheWord + _userInput + "\n";
+            string newPromt = _youreWord + _userInput + "\n";
 
             if ( _mainDictionary.IsWordInDictionary( _userInput ) )
             {

@@ -53,7 +53,8 @@
                 {
                     _selectedIndex--;
                 }
-                else if ( keyPressed == ConsoleKey.DownArrow && _selectedIndex < _options.Length - 1 )
+
+                if ( keyPressed == ConsoleKey.DownArrow && _selectedIndex < _options.Length - 1 )
                 {
                     _selectedIndex++;
                 }

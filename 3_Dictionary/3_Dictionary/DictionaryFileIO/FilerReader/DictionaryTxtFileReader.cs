@@ -29,6 +29,7 @@
             foreach ( string line in lines )
             {
                 string[] words = line.Split( dictionarySeparator );
+
                 if ( txtDictionary.ContainsKey( words[ 0 ] ) )
                 {
                     throw new DictionaryFileIOException( _filePath, "Больше одного значения по одному ключу" );

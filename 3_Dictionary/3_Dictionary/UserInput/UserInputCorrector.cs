@@ -13,10 +13,10 @@
                 {
                     return userInput.ToLower();
                 }
-                else
-                {
-                    throw new Exception( "Некорректный ввод" );
-                }
+
+                Console.Clear();
+                Console.WriteLine( "Некорректный ввод" );
+                Console.Write( "Введите слово еще раз: " );
             }
         }
     }
