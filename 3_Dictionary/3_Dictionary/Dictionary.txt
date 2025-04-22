@@ -1,0 +1,13 @@
+sun солнце
+moon луна
+star звезда
+sky небо
+cloud облако
+rain дождь
+snow снег
+wind ветер
+storm буря
+cat кот
+no нет
+любовь love
+bird птица
