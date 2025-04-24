@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Fighters.Models.Races
+﻿namespace Fighters.Models.Races
 {
-    internal class Ghoul
+    internal class Ghoul : IRace
     {
+        public int Damage => 1000 - 7;
+
+        public int Health => 1000 - 7;
+
+        public int Armor => 1000 - 7;
     }
 }

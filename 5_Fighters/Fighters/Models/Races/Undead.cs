@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Fighters.Models.Races
+﻿namespace Fighters.Models.Races
 {
-    internal class Undead
+    internal class Undead : IRace
     {
+        public int Damage => 10;
+
+        public int Health => 110;
+
+        public int Armor => 0;
     }
 }

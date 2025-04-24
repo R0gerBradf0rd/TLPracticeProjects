@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Fighters.Models.Weapons
+﻿namespace Fighters.Models.Weapons
 {
-    internal class AK47
+    internal class AK47 : IWeapon
     {
+        public int Damage
+        {
+            get => 100;
+        }
     }
 }

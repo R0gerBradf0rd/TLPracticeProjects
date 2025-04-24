@@ -16,5 +16,7 @@ namespace Fighters.Models.Fighters
         public void SetWeapon( IWeapon weapon );
 
         public void TakeDamage( int damage );
+
+        public void ShowCurrentHealthAndArmor();
     }
 }

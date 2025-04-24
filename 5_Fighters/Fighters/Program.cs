@@ -11,7 +11,7 @@ namespace Fighters
 
             var winner = gameManager.Play(
                 new Knight( "Tom", new Human() ),
-                new Knight( "Bob", new Human() ) );
+                new Kamil( "Kamil", new Human() ) );
             Console.WriteLine( $"Winner: {winner.Name}" );
         }
     }

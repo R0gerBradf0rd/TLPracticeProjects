@@ -7,11 +7,11 @@ namespace Fighters.Models.Fighters
     public class Knight : IFighter
     {
         private readonly IRace _race;
-        private IArmor _armor = new NoArmor();
-        private IWeapon _weapon = new Firsts();
+        private IArmor _armor = new IronArmor();
+        private IWeapon _weapon = new Sword();
 
         private int _currentHealth;
-
+        private int _currentArmor;
         public string Name { get; private set; }
 
         public Knight( string name, IRace race )
@@ -20,6 +20,7 @@ namespace Fighters.Models.Fighters
             _race = race;
 
             _currentHealth = GetMaxHealth();
+            _currentArmor = CalculateArmor();
         }
 
         public int GetCurrentHealth() => _currentHealth;
@@ -40,15 +41,35 @@ namespace Fighters.Models.Fighters
             _weapon = weapon;
         }
 
+        public void ShowCurrentHealthAndArmor()
+        {
+            Console.WriteLine( $"Current Health: {_currentHealth}" );
+            Console.WriteLine( $"Current Armor: {_currentArmor}" );
+        }
         public void TakeDamage( int damage )
         {
-            int newHealth = _currentHealth - damage;
+            int newHealth = _currentHealth;
+            int newArmor = _currentArmor;
+            if ( _currentArmor > 0 )
+            {
+                newArmor = _currentArmor - damage;
+            }
+            if ( _currentHealth > 0 && _currentArmor == 0 )
+            {
+                newHealth = _currentHealth - damage;
+            }
+            if ( newArmor < 0 )
+            {
+                newHealth = _currentHealth + newArmor;
+                newArmor = 0;
+            }
             if ( newHealth < 0 )
             {
                 newHealth = 0;
             }
 
             _currentHealth = newHealth;
+            _currentArmor = newArmor;
         }
     }
 }

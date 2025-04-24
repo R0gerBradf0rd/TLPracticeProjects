@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Fighters.Models.Races
+﻿namespace Fighters.Models.Races
 {
-    internal class Demon
+    internal class Demon : IRace
     {
+        public int Damage => 666;
+
+        public int Health => 666;
+
+        public int Armor => 666;
     }
 }

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Fighters.Models.Races
+﻿namespace Fighters.Models.Races
 {
-    internal class Angel
+    internal class Angel : IRace
     {
+        public int Damage => 777;
+
+        public int Health => 777;
+
+        public int Armor => 777;
     }
 }
