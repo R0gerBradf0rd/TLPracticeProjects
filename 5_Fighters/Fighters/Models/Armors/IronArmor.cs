@@ -2,6 +2,6 @@
 {
     internal class IronArmor : IArmor
     {
-        public int Armor => 160;
+        public int Armor => 100;
     }
 }

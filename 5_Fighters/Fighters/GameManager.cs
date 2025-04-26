@@ -1,35 +1,47 @@
 ﻿using Fighters.Extensions;
 using Fighters.Models.Fighters;
+using Fighters.UserIO;
 
 namespace Fighters
 {
     public class GameManager
     {
+        private IUserIO _messageProvider;
+
+        public GameManager( IUserIO messageProvider )
+        {
+            _messageProvider = messageProvider;
+        }
         public IFighter Play( IFighter fighterA, IFighter fighterB )
         {
             int round = 0;
             while ( true )
             {
-                Console.WriteLine( $"Round {++round}:" );
+                Thread.Sleep( 1000 );
+                _messageProvider.WriteMessageWithNewLine( $"Раунд {++round}:" );
+
+                Thread.Sleep( 2000 );
                 var firstFighterDamage = fighterA.CalculateDamage();
                 fighterB.TakeDamage( firstFighterDamage );
-                Console.WriteLine( $"Fighter {fighterA.Name} hit Fighter {fighterB.Name} with {firstFighterDamage} damage" );
+                _messageProvider.WriteMessageWithNewLine( $"Боец {fighterA.Name} бьет Бойца {fighterB.Name} и на носит {firstFighterDamage} единиц урона" );
                 fighterA.ShowCurrentHealthAndArmor();
+                Thread.Sleep( 2000 );
                 if ( !fighterB.IsAlive() )
                 {
                     return fighterA;
                 }
 
-                var secondFughterDamage = fighterB.CalculateDamage();
-                fighterA.TakeDamage( secondFughterDamage );
-                Console.WriteLine( $"Fighter {fighterB.Name} hit Fighter {fighterA.Name} with {secondFughterDamage} damage" );
+                var secondFighterDamage = fighterB.CalculateDamage();
+                fighterA.TakeDamage( secondFighterDamage );
+                _messageProvider.WriteMessageWithNewLine( $"Боец {fighterB.Name} бьет Бойца {fighterA.Name} и на носит {secondFighterDamage} единиц урона" );
                 fighterB.ShowCurrentHealthAndArmor();
+                Thread.Sleep( 2000 );
                 if ( !fighterA.IsAlive() )
                 {
                     return fighterB;
                 }
 
-                Console.WriteLine();
+                _messageProvider.ClearScreen();
             }
         }
     }

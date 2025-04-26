@@ -1,5 +1,6 @@
-﻿using Fighters.Models.Races;
+﻿using Fighters.ChooseOfCharacters;
 using Fighters.Models.Fighters;
+using Fighters.UserIO;
 
 namespace Fighters
 {
@@ -7,12 +8,30 @@ namespace Fighters
     {
         public static void Main( string[] args )
         {
-            var gameManager = new GameManager();
+            IUserIO messageProvider = new ConsoleDelayIO();
 
-            var winner = gameManager.Play(
-                new Knight( "Tom", new Human() ),
-                new Kamil( "Kamil", new Human() ) );
-            Console.WriteLine( $"Winner: {winner.Name}" );
+            var gameManager = new GameManager( messageProvider );
+
+            var characterCreator = new CharacterCreationProcedure( messageProvider );
+
+            messageProvider.WriteMessageWithNewLine( "Создайте первого персонажа." );
+            IFighter fighterA = characterCreator.Create();
+            messageProvider.ClearScreen();
+
+            messageProvider.WriteMessageWithNewLine( "Создайте второго персонажа." );
+            IFighter fighterB = characterCreator.Create();
+            messageProvider.ClearScreen();
+
+            IFighter winner;
+            if ( fighterA.Initiative >= fighterB.Initiative )
+            {
+                winner = gameManager.Play( fighterA, fighterB );
+            }
+            else
+            {
+                winner = gameManager.Play( fighterB, fighterA );
+            }
+            messageProvider.WriteMessageWithNewLine( $"Победитель: {winner.Name}" );
         }
     }
 }

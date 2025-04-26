@@ -4,7 +4,7 @@ using Fighters.Models.Weapons;
 
 namespace Fighters.Models.Fighters
 {
-    public class Knight : IFighter
+    public class Fighter : IFighter
     {
         private readonly IRace _race;
         private IArmor _armor = new IronArmor();
@@ -12,12 +12,15 @@ namespace Fighters.Models.Fighters
 
         private int _currentHealth;
         private int _currentArmor;
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
-        public Knight( string name, IRace race )
+        public int Initiative { get; set; }
+
+        public Fighter( string name, IRace race )
         {
             Name = name;
             _race = race;
+            Initiative = race.Initiative;
 
             _currentHealth = GetMaxHealth();
             _currentArmor = CalculateArmor();
@@ -27,7 +30,24 @@ namespace Fighters.Models.Fighters
 
         public int GetMaxHealth() => _race.Health;
 
-        public int CalculateDamage() => _weapon.Damage + _race.Damage;
+        public int CalculateDamage()
+        {
+            int damage = _weapon.Damage + _race.Damage;
+
+            var random = new Random();
+
+            int randomDamage = random.Next( ( int )( damage * -0.2 ), ( int )( damage * 0.1 ) );
+
+            int criticalDamage = 1;
+
+            // Критический урон, если выпадает 7
+            if ( random.Next( 10 ) == 7 )
+            {
+                criticalDamage = 2;
+            }
+
+            return ( ( damage + randomDamage ) * criticalDamage ) * criticalDamage;
+        }
 
         public int CalculateArmor() => _armor.Armor + _race.Armor;
 
@@ -43,8 +63,8 @@ namespace Fighters.Models.Fighters
 
         public void ShowCurrentHealthAndArmor()
         {
-            Console.WriteLine( $"Current Health: {_currentHealth}" );
-            Console.WriteLine( $"Current Armor: {_currentArmor}" );
+            Console.WriteLine( $"Текущее Здоровье: {_currentHealth}" );
+            Console.WriteLine( $"Текущая Броня: {_currentArmor}\n" );
         }
         public void TakeDamage( int damage )
         {
@@ -70,6 +90,11 @@ namespace Fighters.Models.Fighters
 
             _currentHealth = newHealth;
             _currentArmor = newArmor;
+        }
+
+        public void SetName( string name )
+        {
+            Name = name;
         }
     }
 }

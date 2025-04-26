@@ -7,5 +7,7 @@
         public int Health => 110;
 
         public int Armor => 0;
+
+        public int Initiative => 60;
     }
 }

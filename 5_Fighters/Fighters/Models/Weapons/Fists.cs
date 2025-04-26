@@ -1,6 +1,6 @@
 ﻿namespace Fighters.Models.Weapons
 {
-    public class Firsts : IWeapon
+    public class Fists : IWeapon
     {
         public int Damage
         {

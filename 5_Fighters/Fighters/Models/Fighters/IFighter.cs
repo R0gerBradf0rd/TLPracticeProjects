@@ -7,16 +7,16 @@ namespace Fighters.Models.Fighters
     {
         string Name { get; }
 
-        public int GetCurrentHealth();
-        public int GetMaxHealth();
-        public int CalculateDamage();
-        public int CalculateArmor();
+        int Initiative { get; }
+        int GetCurrentHealth();
+        int GetMaxHealth();
+        int CalculateDamage();
+        int CalculateArmor();
+        void SetArmor( IArmor armor );
+        void SetWeapon( IWeapon weapon );
 
-        public void SetArmor( IArmor armor );
-        public void SetWeapon( IWeapon weapon );
-
-        public void TakeDamage( int damage );
-
-        public void ShowCurrentHealthAndArmor();
+        void SetName( string name );
+        void TakeDamage( int damage );
+        void ShowCurrentHealthAndArmor();
     }
 }
