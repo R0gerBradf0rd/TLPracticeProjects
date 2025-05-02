@@ -12,6 +12,11 @@
             return Console.ReadLine();
         }
 
+        public void WhaitForKeyPress()
+        {
+            Console.ReadKey( true );
+        }
+
         public void WriteMessage( string message )
         {
             Console.Write( message );

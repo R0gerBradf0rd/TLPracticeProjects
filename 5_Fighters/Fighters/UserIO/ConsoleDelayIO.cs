@@ -29,5 +29,10 @@
         {
             Console.Clear();
         }
+
+        public void WhaitForKeyPress()
+        {
+            Console.ReadKey( true );
+        }
     }
 }

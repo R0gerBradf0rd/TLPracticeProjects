@@ -9,5 +9,7 @@
         string GetMessage();
 
         void ClearScreen();
+
+        void WhaitForKeyPress();
     }
 }

@@ -6,7 +6,7 @@ using Fighters.UserIO;
 
 namespace Fighters.ChooseOfCharacters
 {
-    public class CharacterCreationProcedure
+    public class CharacterCreator
     {
         private IUserIO _messageProvider;
         private IRace _race;
@@ -15,12 +15,39 @@ namespace Fighters.ChooseOfCharacters
         private IWeapon _weapon;
         private IArmor _armor;
 
-        public CharacterCreationProcedure( IUserIO messageProvider )
+        public CharacterCreator( IUserIO messageProvider )
         {
             _messageProvider = messageProvider;
         }
 
-        public IFighter Create()
+        public List<IFighter> CreateFighters()
+        {
+            var fighters = new List<IFighter>();
+
+            while ( true )
+            {
+                _messageProvider.WriteMessage( "Ведите колличество персонажей: " );
+                if ( !int.TryParse( _messageProvider.GetMessage(), out int count ) || count <= 1 )
+                {
+                    _messageProvider.WriteMessageWithNewLine( "Ошибка! Пожалуйста, введите число больше единицы!" );
+                    continue;
+                }
+
+                for ( int i = 0; i < count; ++i )
+                {
+                    _messageProvider.ClearScreen();
+
+                    var fighter = CreateFighter();
+
+                    fighters.Add( fighter );
+                }
+
+                return fighters;
+
+            }
+        }
+
+        private IFighter CreateFighter()
         {
             ChooseRace();
             GetName();
@@ -47,43 +74,21 @@ namespace Fighters.ChooseOfCharacters
             while ( true )
             {
                 string race = _messageProvider.GetMessage();
-                if ( !int.TryParse( race, out int number ) || number > 7 || number < 1 )
+                if ( !int.TryParse( race, out int number ) )
                 {
                     _messageProvider.WriteMessageWithNewLine( "Некорректный ввод! Пожалуйста, введите цифру из списка!" );
                     continue;
                 }
-                switch ( number )
+
+                _race = RaceFactory.Choose( number );
+
+                if ( _race == null )
                 {
-                    case 1:
-                        _race = new Angel();
-                        return;
-
-                    case 2:
-                        _race = new Demon();
-                        return;
-
-                    case 3:
-                        _race = new Human();
-                        return;
-
-                    case 4:
-                        _race = new Ghoul();
-                        return;
-                    case 5:
-                        _race = new Ork();
-                        return;
-
-                    case 6:
-                        _race = new Undead();
-                        return;
-
-                    case 7:
-                        _race = new God();
-                        return;
-
-                    default:
-                        return;
+                    _messageProvider.WriteMessageWithNewLine( "Некорректный ввод! Пожалуйста, введите цифру из списка!" );
+                    continue;
                 }
+
+                return;
             }
         }
 
@@ -106,40 +111,21 @@ namespace Fighters.ChooseOfCharacters
             while ( true )
             {
                 string armor = _messageProvider.GetMessage();
-                if ( !int.TryParse( armor, out int number ) || number > 7 || number < 1 )
+                if ( !int.TryParse( armor, out int number ) )
                 {
                     _messageProvider.WriteMessageWithNewLine( "Некорректный ввод! Пожалуйста, введите цифру из списка!" );
                     continue;
                 }
-                switch ( number )
+
+                _armor = ArmorFactory.Choose( number );
+
+                if ( _armor == null )
                 {
-                    case 1:
-                        _armor = new HolyArmor();
-                        return;
-
-                    case 2:
-                        _armor = new DemonicArmor();
-                        return;
-
-                    case 3:
-                        _armor = new NoArmor();
-                        return;
-
-                    case 4:
-                        _armor = new GhoulArmor();
-                        return;
-
-                    case 5:
-                        _armor = new IronArmor();
-                        return;
-
-                    case 6:
-                        _armor = new DimondArmor();
-                        return;
-
-                    default:
-                        return;
+                    _messageProvider.WriteMessageWithNewLine( "Некорректный ввод! Пожалуйста, введите цифру из списка!" );
+                    continue;
                 }
+
+                return;
             }
         }
 
@@ -155,36 +141,21 @@ namespace Fighters.ChooseOfCharacters
             while ( true )
             {
                 string weapon = _messageProvider.GetMessage();
-                if ( !int.TryParse( weapon, out int number ) || number > 7 || number < 1 )
+                if ( !int.TryParse( weapon, out int number ) )
                 {
                     _messageProvider.WriteMessageWithNewLine( "Некорректный ввод! Пожалуйста, введите цифру из списка!" );
                     continue;
                 }
-                switch ( number )
+
+                _weapon = WeaponFactory.Choose( number );
+
+                if ( _weapon == null )
                 {
-                    case 1:
-                        _weapon = new Fists();
-                        return;
-
-                    case 2:
-                        _weapon = new Knife();
-                        return;
-
-                    case 3:
-                        _weapon = new Sword();
-                        return;
-
-                    case 4:
-                        _weapon = new AK47();
-                        return;
-
-                    case 5:
-                        _weapon = new LaserGun();
-                        return;
-
-                    default:
-                        return;
+                    _messageProvider.WriteMessageWithNewLine( "Некорректный ввод! Пожалуйста, введите цифру из списка!" );
+                    continue;
                 }
+
+                return;
             }
         }
     }
