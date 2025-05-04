@@ -36,6 +36,7 @@ namespace Fighters.ChooseOfCharacters
                 for ( int i = 0; i < count; ++i )
                 {
                     _messageProvider.ClearScreen();
+                    _messageProvider.WriteMessageWithNewLine( $"Создание персонажа № {i + 1}" );
 
                     var fighter = CreateFighter();
 
@@ -43,16 +44,15 @@ namespace Fighters.ChooseOfCharacters
                 }
 
                 return fighters;
-
             }
         }
 
         private IFighter CreateFighter()
         {
-            ChooseRace();
-            GetName();
-            ChooseWeapon();
-            ChooseArmor();
+            _race = ChooseRace();
+            _characterName = GetName();
+            _weapon = GetWeapon();
+            _armor = GetArmor();
 
             _fighter = new Fighter( _characterName, _race );
             _fighter.SetArmor( _armor );
@@ -60,102 +60,88 @@ namespace Fighters.ChooseOfCharacters
 
             return _fighter;
         }
-        private void ChooseRace()
+
+        private IRace ChooseRace()
         {
-            _messageProvider.WriteMessageWithNewLine( "Выберите рассу персонажа." );
-            _messageProvider.WriteMessageWithNewLine( "1 - Ангел {Здоровье: 777, Защита: 777, Урон: 777, Инициатива: 10}" );
-            _messageProvider.WriteMessageWithNewLine( "2 - Демон {Здоровье: 666, Защита: 666, Урон: 666, Инициатива: 666}" );
-            _messageProvider.WriteMessageWithNewLine( "3 - Человек {Здоровье: 100, Защита: 0, Урон: 1, Инициатива: 50}" );
-            _messageProvider.WriteMessageWithNewLine( "4 - Гуль {Здоровье: 1000 - 7, Защита: 1000 - 7, Урон: 1000 - 7, Инициатива: 1000 - 7}" );
-            _messageProvider.WriteMessageWithNewLine( "5 - Орк {Здоровье: 150, Защита: 30, Урон: 10, Инициатива: 50}" );
-            _messageProvider.WriteMessageWithNewLine( "6 - Нежить {Здоровье: 110, Защита: 0, Урон: 10, Инициатива: 60}" );
-            _messageProvider.WriteMessageWithNewLine( "7 - Божество {Здоровье: 1000000000, Защита: 1000000000, Урон: 1000000000, Инициатива: 0}" );
+            RaceFactory.GetRaceDescription();
+            IRace race;
 
             while ( true )
             {
-                string race = _messageProvider.GetMessage();
-                if ( !int.TryParse( race, out int number ) )
+                string input = _messageProvider.GetMessage();
+                if ( !int.TryParse( input, out int number ) )
                 {
                     _messageProvider.WriteMessageWithNewLine( "Некорректный ввод! Пожалуйста, введите цифру из списка!" );
                     continue;
                 }
 
-                _race = RaceFactory.Choose( number );
+                race = RaceFactory.Get( number );
 
-                if ( _race == null )
+                if ( race is null )
                 {
                     _messageProvider.WriteMessageWithNewLine( "Некорректный ввод! Пожалуйста, введите цифру из списка!" );
                     continue;
                 }
 
-                return;
+                return race;
             }
         }
 
         private string GetName()
         {
             _messageProvider.WriteMessage( "Введите имя персонажа: " );
-            return _characterName = _messageProvider.GetMessage();
+            return _messageProvider.GetMessage();
         }
 
-        private void ChooseArmor()
+        private IArmor GetArmor()
         {
-            _messageProvider.WriteMessageWithNewLine( "Выберите броню персонажа." );
-            _messageProvider.WriteMessageWithNewLine( "1 - Святая броня {Защита: 1001}" );
-            _messageProvider.WriteMessageWithNewLine( "2 - Демоническая броня {Защита: 1000}" );
-            _messageProvider.WriteMessageWithNewLine( "3 - Без брони {Защита: 0}" );
-            _messageProvider.WriteMessageWithNewLine( "4 - Броня Гуля {Защита: 1000 - 7}" );
-            _messageProvider.WriteMessageWithNewLine( "5 - Железная броня {Защита: 100}" );
-            _messageProvider.WriteMessageWithNewLine( "6 - Алмазная броня {Защита: 200}" );
+            ArmorFactory.GetArmorDescription();
+            IArmor armor;
 
             while ( true )
             {
-                string armor = _messageProvider.GetMessage();
-                if ( !int.TryParse( armor, out int number ) )
+                string input = _messageProvider.GetMessage();
+                if ( !int.TryParse( input, out int number ) )
                 {
                     _messageProvider.WriteMessageWithNewLine( "Некорректный ввод! Пожалуйста, введите цифру из списка!" );
                     continue;
                 }
 
-                _armor = ArmorFactory.Choose( number );
+                armor = ArmorFactory.Get( number );
 
-                if ( _armor == null )
+                if ( armor is null )
                 {
                     _messageProvider.WriteMessageWithNewLine( "Некорректный ввод! Пожалуйста, введите цифру из списка!" );
                     continue;
                 }
 
-                return;
+                return armor;
             }
         }
 
-        private void ChooseWeapon()
+        private IWeapon GetWeapon()
         {
-            _messageProvider.WriteMessageWithNewLine( "Выберите оружие персонажа." );
-            _messageProvider.WriteMessageWithNewLine( "1 - Кулаки {Урон: 1}" );
-            _messageProvider.WriteMessageWithNewLine( "2 - Нож {Урон: 20}" );
-            _messageProvider.WriteMessageWithNewLine( "3 - Меч {Урон: 80}" );
-            _messageProvider.WriteMessageWithNewLine( "4 - АК47 {Урон: 100}" );
-            _messageProvider.WriteMessageWithNewLine( "5 - Лазерная пушка {Урон: 200}" );
+            WeaponFactory.GetWeaponDescription();
+            IWeapon weapon;
 
             while ( true )
             {
-                string weapon = _messageProvider.GetMessage();
-                if ( !int.TryParse( weapon, out int number ) )
+                string input = _messageProvider.GetMessage();
+                if ( !int.TryParse( input, out int number ) )
                 {
                     _messageProvider.WriteMessageWithNewLine( "Некорректный ввод! Пожалуйста, введите цифру из списка!" );
                     continue;
                 }
 
-                _weapon = WeaponFactory.Choose( number );
+                weapon = WeaponFactory.Get( number );
 
-                if ( _weapon == null )
+                if ( weapon is null )
                 {
                     _messageProvider.WriteMessageWithNewLine( "Некорректный ввод! Пожалуйста, введите цифру из списка!" );
                     continue;
                 }
 
-                return;
+                return weapon;
             }
         }
     }

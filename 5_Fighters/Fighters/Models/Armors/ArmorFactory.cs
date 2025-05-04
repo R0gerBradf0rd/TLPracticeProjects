@@ -1,8 +1,10 @@
-﻿namespace Fighters.Models.Armors
+﻿using Fighters.UserIO;
+
+namespace Fighters.Models.Armors
 {
     public class ArmorFactory
     {
-        public static IArmor Choose( int number )
+        public static IArmor Get( int number )
         {
             switch ( number )
             {
@@ -27,6 +29,18 @@
                 default:
                     return null;
             }
+        }
+
+        public static void GetArmorDescription()
+        {
+            IUserIO messageProvider = new ConsoleDelayIO();
+            messageProvider.WriteMessageWithNewLine( "Выберите броню персонажа." );
+            messageProvider.WriteMessageWithNewLine( "1 - Святая броня {Защита: 1001}" );
+            messageProvider.WriteMessageWithNewLine( "2 - Демоническая броня {Защита: 1000}" );
+            messageProvider.WriteMessageWithNewLine( "3 - Без брони {Защита: 0}" );
+            messageProvider.WriteMessageWithNewLine( "4 - Броня Гуля {Защита: 1000 - 7}" );
+            messageProvider.WriteMessageWithNewLine( "5 - Железная броня {Защита: 100}" );
+            messageProvider.WriteMessageWithNewLine( "6 - Алмазная броня {Защита: 200}" );
         }
     }
 }
