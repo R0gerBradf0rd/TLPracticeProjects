@@ -4,7 +4,7 @@ namespace Fighters.Models.Weapons
 {
     public class WeaponFactory
     {
-        public static IWeapon Get( int number )
+        public static IWeapon GetWeaponType( int number )
         {
             switch ( number )
             {
@@ -28,15 +28,14 @@ namespace Fighters.Models.Weapons
             }
         }
 
-        public static void GetWeaponDescription()
+        public static string GetWeaponDescription()
         {
-            IUserIO messageProvider = new ConsoleDelayIO();
-            messageProvider.WriteMessageWithNewLine( "Выберите оружие персонажа." );
-            messageProvider.WriteMessageWithNewLine( "1 - Кулаки {Урон: 1}" );
-            messageProvider.WriteMessageWithNewLine( "2 - Нож {Урон: 20}" );
-            messageProvider.WriteMessageWithNewLine( "3 - Меч {Урон: 80}" );
-            messageProvider.WriteMessageWithNewLine( "4 - АК47 {Урон: 100}" );
-            messageProvider.WriteMessageWithNewLine( "5 - Лазерная пушка {Урон: 200}" );
+            return "Выберите оружие персонажа." +
+                "\n1 - Кулаки {Урон: 1}" +
+                "\n2 - Нож {Урон: 20}" +
+                "\n3 - Меч {Урон: 80}" +
+                "\n4 - АК47 {Урон: 100}" +
+                "\n5 - Лазерная пушка {Урон: 200}";
         }
     }
 }

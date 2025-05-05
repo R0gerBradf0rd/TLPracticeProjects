@@ -36,9 +36,9 @@ namespace Fighters.ChooseOfCharacters
                 for ( int i = 0; i < count; ++i )
                 {
                     _messageProvider.ClearScreen();
-                    _messageProvider.WriteMessageWithNewLine( $"Создание персонажа № {i + 1}" );
+                    _messageProvider.WriteMessageWithNewLine( $"Создание персонажа №{i + 1}" );
 
-                    var fighter = CreateFighter();
+                    IFighter fighter = CreateFighter();
 
                     fighters.Add( fighter );
                 }
@@ -49,7 +49,7 @@ namespace Fighters.ChooseOfCharacters
 
         private IFighter CreateFighter()
         {
-            _race = ChooseRace();
+            _race = GetRace();
             _characterName = GetName();
             _weapon = GetWeapon();
             _armor = GetArmor();
@@ -61,9 +61,9 @@ namespace Fighters.ChooseOfCharacters
             return _fighter;
         }
 
-        private IRace ChooseRace()
+        private IRace GetRace()
         {
-            RaceFactory.GetRaceDescription();
+            _messageProvider.WriteMessageWithNewLine( RaceFactory.GetRaceDescription() );
             IRace race;
 
             while ( true )
@@ -75,7 +75,7 @@ namespace Fighters.ChooseOfCharacters
                     continue;
                 }
 
-                race = RaceFactory.Get( number );
+                race = RaceFactory.GetRaceType( number );
 
                 if ( race is null )
                 {
@@ -95,7 +95,7 @@ namespace Fighters.ChooseOfCharacters
 
         private IArmor GetArmor()
         {
-            ArmorFactory.GetArmorDescription();
+            _messageProvider.WriteMessageWithNewLine( ArmorFactory.GetArmorDescription() );
             IArmor armor;
 
             while ( true )
@@ -107,7 +107,7 @@ namespace Fighters.ChooseOfCharacters
                     continue;
                 }
 
-                armor = ArmorFactory.Get( number );
+                armor = ArmorFactory.GetArmorType( number );
 
                 if ( armor is null )
                 {
@@ -121,7 +121,7 @@ namespace Fighters.ChooseOfCharacters
 
         private IWeapon GetWeapon()
         {
-            WeaponFactory.GetWeaponDescription();
+            _messageProvider.WriteMessageWithNewLine( WeaponFactory.GetWeaponDescription() );
             IWeapon weapon;
 
             while ( true )
@@ -133,7 +133,7 @@ namespace Fighters.ChooseOfCharacters
                     continue;
                 }
 
-                weapon = WeaponFactory.Get( number );
+                weapon = WeaponFactory.GetWeaponType( number );
 
                 if ( weapon is null )
                 {

@@ -22,7 +22,7 @@ namespace Fighters
 
             for ( int i = 0; _fighterList.Count > 1; i++ )
             {
-                if ( i == _fighterList.Count )
+                if ( i >= _fighterList.Count )
                 {
                     i = 0;
                 }
@@ -33,31 +33,31 @@ namespace Fighters
                 _messageProvider.WriteMessageWithNewLine( $"Раунд {++rounds}:" );
                 Thread.Sleep( 1000 );
 
-                var randomFighter = new Random();
-                var firstFighter = _fighterList[ i ];
-                _fighterList.Remove( firstFighter );
-                var secondFighter = _fighterList[ randomFighter.Next( 0, _fighterList.Count() - 1 ) ];
+                var randomIndex = new Random();
+                var fighter = _fighterList[ i ];
+                _fighterList.Remove( fighter );
+                var enemy = _fighterList[ randomIndex.Next( 0, _fighterList.Count() - 1 ) ];
 
-                var firstFighterDamage = firstFighter.CalculateDamage();
-                secondFighter.TakeDamage( firstFighterDamage );
-                _messageProvider.WriteMessageWithNewLine( $"Боец {firstFighter.Name} бьет Бойца {secondFighter.Name} и на носит {firstFighterDamage} единиц урона" );
+                var firstFighterDamage = fighter.CalculateDamage();
+                enemy.TakeDamage( firstFighterDamage );
+                _messageProvider.WriteMessageWithNewLine( $"Боец {fighter.Name} бьет Бойца {enemy.Name} и на носит {firstFighterDamage} единиц урона" );
 
-                _messageProvider.WriteMessageWithNewLine( $"Состояние бойца {firstFighter.Name}:" );
-                firstFighter.ShowCurrentHealthAndArmor();
+                _messageProvider.WriteMessageWithNewLine( $"Состояние бойца {fighter.Name}:" );
+                fighter.ShowCurrentHealthAndArmor();
 
-                _messageProvider.WriteMessageWithNewLine( $"Состояние бойца {secondFighter.Name}:" );
-                secondFighter.ShowCurrentHealthAndArmor();
-                if ( !secondFighter.IsAlive() )
+                _messageProvider.WriteMessageWithNewLine( $"Состояние бойца {enemy.Name}:" );
+                enemy.ShowCurrentHealthAndArmor();
+                if ( !enemy.IsAlive() )
                 {
-                    _messageProvider.WriteMessageWithNewLine( $"Боец {secondFighter.Name} пал в бою!" );
-                    _fighterList.Remove( secondFighter );
+                    _messageProvider.WriteMessageWithNewLine( $"Боец {enemy.Name} пал в бою!" );
+                    _fighterList.Remove( enemy );
                 }
 
                 Thread.Sleep( 1000 );
                 _messageProvider.WriteMessageWithNewLine( "Нажмите любую клавишу, чтобы продолжить" );
                 _messageProvider.WhaitForKeyPress();
 
-                _fighterList.Add( firstFighter );
+                _fighterList.Add( fighter );
             }
 
             return _fighterList[ 0 ];
