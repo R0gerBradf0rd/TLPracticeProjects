@@ -1,6 +1,6 @@
 ﻿namespace CarFactory.Models.CarBrands
 {
-    public enum AvilableBrands
+    public enum Brand
     {
         Ferrari,
         Lamborghini,

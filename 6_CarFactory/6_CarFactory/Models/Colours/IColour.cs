@@ -4,6 +4,6 @@
     {
         string Name { get; }
 
-        AvilableColours AvilableColour { get; }
+        Colour AvilableColour { get; }
     }
 }

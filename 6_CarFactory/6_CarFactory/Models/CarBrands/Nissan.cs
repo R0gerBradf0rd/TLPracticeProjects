@@ -4,6 +4,6 @@
     {
         public string Name => "Nissan";
 
-        public AvilableBrands AvilableBrand => AvilableBrands.Nissan;
+        public Brand AvilableBrand => Brand.Nissan;
     }
 }

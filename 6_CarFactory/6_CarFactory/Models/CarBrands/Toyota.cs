@@ -4,6 +4,6 @@
     {
         public string Name => "Toyota";
 
-        public AvilableBrands AvilableBrand => AvilableBrands.Toyota;
+        public Brand AvilableBrand => Brand.Toyota;
     }
 }

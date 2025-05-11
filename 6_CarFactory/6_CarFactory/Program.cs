@@ -12,7 +12,7 @@ namespace CarFactory
             ICar car = carCreator.CreateCar();
 
             messageProvider.WriteMessageWithNewLine( "Ваша машина:" );
-            messageProvider.WriteMessageWithNewLine( CarConfiguration.GetCarConfiguration( car ) );
+            messageProvider.WriteMessageWithNewLine( car.ToString() );
         }
     }
 }

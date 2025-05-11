@@ -4,6 +4,6 @@
     {
         string Name { get; }
 
-        AvilableBrands AvilableBrand { get; }
+        Brand AvilableBrand { get; }
     }
 }

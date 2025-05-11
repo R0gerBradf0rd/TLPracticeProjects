@@ -21,5 +21,7 @@ namespace CarFactory.Models.Car
         double MaxSpeed { get; }
 
         double TotalWeight { get; }
+
+        public string ToString();
     }
 }

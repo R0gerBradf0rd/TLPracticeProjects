@@ -4,6 +4,6 @@
     {
         public string Name => "White";
 
-        public AvilableColours AvilableColour => AvilableColours.white;
+        public Colour AvilableColour => Colour.White;
     }
 }
