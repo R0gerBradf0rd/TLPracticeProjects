@@ -36,17 +36,6 @@ namespace CarFactory.Models.Car
             Transmission = transmission;
         }
 
-        public string ToString()
-        {
-            return $"Марка машины - {CarBrand.Name}" +
-                $"\nТип кузова - {BodyWork.Name}" +
-                $"\nЦвет - {Colour.Name}" +
-                $"\nТрансмиссия - {Transmission.Name}" +
-                $"\nДвигатель - {Engine.Name}" +
-                $"\nВес машины - {TotalWeight}" +
-                $"\nМаксимальная возможная скорось - {MaxSpeed}";
-        }
-
         // gpt усовершенствовал функцию вычисления скорости, чтобы вес автомобиля тоже учитывался
         private double CalculateMaxSpeed( int horsePower, double weight )
         {
@@ -89,6 +78,17 @@ namespace CarFactory.Models.Car
         private double CalculateTotalWeight()
         {
             return BodyWork.Weight + Engine.Weight + Transmission.Weight;
+        }
+
+        public override string ToString()
+        {
+            return $"Марка машины - {CarBrand.Name}" +
+                $"\nТип кузова - {BodyWork.Name}" +
+                $"\nЦвет - {Colour.Name}" +
+                $"\nТрансмиссия - {Transmission.Name}" +
+                $"\nДвигатель - {Engine.Name}" +
+                $"\nВес машины - {TotalWeight}" +
+                $"\nМаксимальная возможная скорось - {MaxSpeed}";
         }
     }
 }
