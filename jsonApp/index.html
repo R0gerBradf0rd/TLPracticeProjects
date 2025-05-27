@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>JSON Compare App</title>
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+        <header>
+            <h1>JSON-DIFF</h1>
+            <button id="loginButton">Login</button>
+            <div id="userGreeting" style="display: none;">
+                Hello, <span id="username"></span>
+                <button id="logoutButton">Logout</button>
+            </div>
+        </header>
+
+        <main>
+            <section id="welcome">
+                <h2>Compare two JSONs and see the difference</h2>
+            </section>
+
+            <button id="startButton" style="display: none;">Начать</button>
+
+            <div id="loginForm" style="display: none;">
+                <p>Введите логин:</p>
+                <input type="text" id="userLogin">
+                <button id="loginFormButton">Login</button>
+                <div id="loginError" style="color: red; display: none;">Пожалуйста, введите логин!</div>
+            </div>
+
+            <section id="jsonSection" style="display: none;">
+                <textarea id="oldJson" placeholder="OLD JSON"></textarea>
+                <textarea id="newJson" placeholder="NEW JSON"></textarea>
+                <button id="compareButton">Compare</button>
+                <textarea id="result" placeholder="RESULT" readonly></textarea>
+            </section>
+        </main>
+
+        <script type="module" src="scripts/main.js"></script>
+
+        <footer>
+            <p>© 2025 JSON-DIFF made by SvyaT</p>
+        </footer>
+    </body>
