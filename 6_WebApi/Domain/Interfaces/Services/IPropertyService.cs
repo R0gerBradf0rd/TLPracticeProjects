@@ -6,9 +6,9 @@ namespace Domain.Interfaces.Services
     {
         Property? GetById( Guid id );
 
-        public IEnumerable<Property> GetAll();
+        IEnumerable<Property> GetAll();
 
-        public void UpdateParams(
+        void UpdateParams(
            Guid propertyId,
            string name,
            string country,
@@ -16,9 +16,9 @@ namespace Domain.Interfaces.Services
            double latitude,
            double longitude );
 
-        public void Delete( Guid id );
+        void Delete( Guid id );
 
-        public Property? Create(
+        Property? Create(
             string name,
             string country,
             string city,

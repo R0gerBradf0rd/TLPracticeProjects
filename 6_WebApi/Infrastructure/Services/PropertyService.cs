@@ -30,13 +30,17 @@ namespace Infrastructure.Services
             double latitude,
             double longitude )
         {
-            _propertyRepository.UpdateParams(
-            propertyId,
-            name,
-            country,
-            city,
-            latitude,
-            longitude );
+            Property? property = _propertyRepository.GetById( propertyId );
+            if ( property != null )
+            {
+                property.Id = propertyId;
+                property.Name = name;
+                property.Country = country;
+                property.City = city;
+                property.Latitude = latitude;
+                property.Longitude = longitude;
+                _propertyRepository.UpdateParams( propertyId, property );
+            }
         }
 
         public void Delete( Guid id )
@@ -51,12 +55,18 @@ namespace Infrastructure.Services
             double latitude,
             double longitude )
         {
-            return _propertyRepository.Create(
-            name,
-            country,
-            city,
-            latitude,
-            longitude );
+            Property? property = new()
+            {
+                Id = Guid.NewGuid(),
+                Name = name,
+                Country = country,
+                City = city,
+                Latitude = latitude,
+                Longitude = longitude
+            };
+            _propertyRepository.Create( property );
+
+            return property;
         }
     }
 }

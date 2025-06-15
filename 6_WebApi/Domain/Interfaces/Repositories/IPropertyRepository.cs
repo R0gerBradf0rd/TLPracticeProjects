@@ -4,26 +4,13 @@ namespace Domain.Interfaces.Repositories
 {
     public interface IPropertyRepository
     {
-        Property? Create(
-            string name,
-            string country,
-            string city,
-            double latitude,
-            double longitude
-            );
+        void Create( Property? property );
 
         IEnumerable<Property> GetAll();
 
         Property? GetById( Guid id );
 
-        void UpdateParams(
-            Guid id,
-            string name,
-            string country,
-            string city,
-            double latitude,
-            double longitude
-            );
+        void UpdateParams( Guid id, Property property );
 
         void Delete( Guid id );
     }

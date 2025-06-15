@@ -6,27 +6,27 @@ namespace Infrastructure.Repositories
     public class PropertyRepository : IPropertyRepository
     {
         private readonly List<Property> _properties = new()
-        { new Property() { Id = Guid.NewGuid(), Name = "Test Hotel", Country = "Russia", City = "Moscow", Latitude = 1488, Longitude = 1111 } };
+        {
+            new Property()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Test Hotel",
+                Country = "Russia",
+                City = "Moscow",
+                Latitude = 1488,
+                Longitude = 1111
+            }
+        };
         public IEnumerable<Property> GetAll() => _properties;
 
         public Property? GetById( Guid id ) => _properties.FirstOrDefault( u => u.Id == id );
 
-        public void UpdateParams(
-            Guid propertyId,
-            string name,
-            string country,
-            string city,
-            double latitude,
-            double longitude )
+        public void UpdateParams( Guid propertyId, Property? property )
         {
-            var property = GetById( propertyId );
             if ( property != null )
             {
-                property.Name = name;
-                property.Country = country;
-                property.City = city;
-                property.Latitude = latitude;
-                property.Longitude = longitude;
+                _properties.RemoveAll( u => u.Id == propertyId );
+                _properties.Add( property );
             }
         }
 
@@ -39,25 +39,12 @@ namespace Infrastructure.Repositories
             }
         }
 
-        public Property? Create(
-            string name,
-            string country,
-            string city,
-            double latitude,
-            double longitude )
+        public void Create( Property? property )
         {
-            var property = new Property
+            if ( property != null )
             {
-                Id = Guid.NewGuid(),
-                Name = name,
-                Country = country,
-                City = city,
-                Latitude = latitude,
-                Longitude = longitude
-            };
-            _properties.Add( property );
-
-            return property;
+                _properties.Add( property );
+            }
         }
     }
 }

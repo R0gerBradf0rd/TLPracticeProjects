@@ -10,7 +10,10 @@ namespace Infrastructure.Services
         private readonly IPropertyRepository _propertyRepository;
         private readonly IRoomTypeRepository _roomTypeRepository;
 
-        public ReservationService( IReservationRepository reservationRepository, IRoomTypeRepository roomTypeRepository, IPropertyRepository propertyRepository )
+        public ReservationService(
+            IReservationRepository reservationRepository,
+            IRoomTypeRepository roomTypeRepository,
+            IPropertyRepository propertyRepository )
         {
             _reservationRepository = reservationRepository;
             _propertyRepository = propertyRepository;
@@ -44,7 +47,13 @@ namespace Infrastructure.Services
             return false;
         }
 
-        public Reservation? CreateReservation( Guid propertyId, Guid roomTypeId, DateOnly arrivalDate, DateOnly departureDate, string guestName, string guestPhoneNumber )
+        public Reservation? CreateReservation(
+            Guid propertyId,
+            Guid roomTypeId,
+            DateOnly arrivalDate,
+            DateOnly departureDate,
+            string guestName,
+            string guestPhoneNumber )
         {
             var property = _propertyRepository.GetById( propertyId );
             var roomType = _roomTypeRepository.GetById( roomTypeId );
@@ -61,7 +70,23 @@ namespace Infrastructure.Services
             double total = ( departureDate.DayNumber - arrivalDate.DayNumber ) * roomType.DailyPrice;
             string currency = roomType.Currency;
 
-            return _reservationRepository.Create( propertyId, roomTypeId, arrivalDate, departureDate, arrivalTime, departureTime, guestName, guestPhoneNumber, total, currency );
+            Reservation? reservation = new()
+            {
+                Id = Guid.NewGuid(),
+                PropertyId = propertyId,
+                RoomTypeId = roomTypeId,
+                ArrivalDate = arrivalDate,
+                DepartureDate = departureDate,
+                ArrivalTime = arrivalTime,
+                DepartureTime = departureTime,
+                GuestName = guestName,
+                GuestPhoneNumber = guestPhoneNumber,
+                Total = total,
+                Currency = currency
+            };
+            _reservationRepository.Create( reservation );
+
+            return reservation;
         }
 
         public IEnumerable<ReservationSearchResponse> Search(
@@ -122,7 +147,10 @@ namespace Infrastructure.Services
             return null;
         }
 
-        public IEnumerable<Reservation> GetAllFiltred( DateOnly? arrivalDate, DateOnly? departureDate, string? guestName )
+        public IEnumerable<Reservation> GetAllFiltred(
+            DateOnly? arrivalDate,
+            DateOnly? departureDate,
+            string? guestName )
         {
             IEnumerable<Reservation> reservations = _reservationRepository.GetAll();
             if ( arrivalDate != null )

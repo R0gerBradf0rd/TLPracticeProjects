@@ -33,6 +33,7 @@ namespace _6_WebApi.Controllers
         public ActionResult<Property> GetPropertyById( Guid id )
         {
             Property? property = _propertyService.GetById( id );
+
             return property == null ? NotFound() : Ok( property.ToDto() );
         }
 
@@ -45,12 +46,12 @@ namespace _6_WebApi.Controllers
                 createPropertyRequest.City,
                 createPropertyRequest.Latitude,
                 createPropertyRequest.Longitude );
-            if ( property != null )
+            if ( property == null )
             {
-                return Ok( property.ToDto() );
+                return BadRequest( property );
             }
 
-            return BadRequest( property );
+            return Ok( property.ToDto() );
         }
 
         [HttpPut( "{id}" )]
@@ -70,7 +71,7 @@ namespace _6_WebApi.Controllers
                 createPropertyRequest.Latitude,
                 createPropertyRequest.Longitude );
 
-            return NoContent();
+            return Ok();
         }
 
         [HttpDelete( "{id}" )]
@@ -81,7 +82,7 @@ namespace _6_WebApi.Controllers
 
             _propertyService.Delete( id );
 
-            return NoContent();
+            return Ok();
         }
 
         [HttpGet( "roomTypes/{id}" )]
@@ -96,6 +97,7 @@ namespace _6_WebApi.Controllers
         public ActionResult<RoomType> GetAllRoomTypesPropertyById( Guid propertyId )
         {
             IEnumerable<RoomType> roomType = _roomTypeService.GetAllRoomTypePropertyById( propertyId );
+
             return roomType == null ? NotFound() : Ok( roomType.Select( r => r.ToDto() ).ToList() );
         }
 
@@ -104,10 +106,7 @@ namespace _6_WebApi.Controllers
             Guid propertyId,
             [FromBody] CreateRoomTypeRequest createRoomTypeRequest )
         {
-            RoomType? roomType = null;
-            if ( _propertyService.GetById( propertyId ) != null )
-            {
-                roomType = _roomTypeService.Create(
+            RoomType? roomType = _roomTypeService.Create(
                     propertyId,
                     createRoomTypeRequest.Name,
                     createRoomTypeRequest.DailyPrice,
@@ -116,13 +115,13 @@ namespace _6_WebApi.Controllers
                     createRoomTypeRequest.MaxPersonCount,
                     createRoomTypeRequest.Services,
                     createRoomTypeRequest.Amenities );
-            }
-            if ( roomType != null )
+
+            if ( roomType == null )
             {
-                return Ok( roomType.ToDto() );
+                return BadRequest( roomType );
             }
 
-            return BadRequest( roomType );
+            return Ok( roomType.ToDto() );
         }
 
         [HttpPut( "roomTypes/{id}" )]
@@ -151,12 +150,12 @@ namespace _6_WebApi.Controllers
         [HttpDelete( "roomTypes/{id}" )]
         public IActionResult DeleteRoomtype( Guid id )
         {
-            if ( _roomTypeService.GetById( id ) != null )
+            if ( _roomTypeService.GetById( id ) is null )
             {
-                return Ok();
+                return NotFound();
             }
 
-            return NotFound();
+            return Ok();
         }
     }
 }

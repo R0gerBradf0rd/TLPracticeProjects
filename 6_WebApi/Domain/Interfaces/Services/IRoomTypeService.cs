@@ -6,7 +6,7 @@ namespace Domain.Interfaces.Services
     {
         RoomType? GetById( Guid id );
 
-        public IEnumerable<RoomType> GetAllRoomTypePropertyById( Guid propertyId );
+        IEnumerable<RoomType> GetAllRoomTypePropertyById( Guid propertyId );
 
         void UpdateParams(
             Guid roomTypeId,

@@ -16,7 +16,10 @@ namespace _6_WebApi.Controllers
         private readonly IRoomTypeService _roomTypeService;
         private readonly IReservationService _reservatonService;
 
-        public ReservationsController( IPropertyService propertyService, IRoomTypeService roomTypeService, IReservationService reservatonService )
+        public ReservationsController(
+            IPropertyService propertyService,
+            IRoomTypeService roomTypeService,
+            IReservationService reservatonService )
         {
             _propertyService = propertyService;
             _roomTypeService = roomTypeService;
@@ -24,12 +27,18 @@ namespace _6_WebApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<ReservationDto>> GetAll( DateOnly? arrivalDate, DateOnly? departureDate, string? guestName )
+        public ActionResult<IEnumerable<ReservationDto>> GetAll(
+            DateOnly?
+            arrivalDate,
+            DateOnly?
+            departureDate,
+            string? guestName )
         {
             IEnumerable<Reservation> reservations = _reservatonService.GetAllFiltred( arrivalDate, departureDate, guestName );
 
             return Ok( reservations
-                .Select( r => r.ToDto() ).ToList() );
+                .Select( r => r.ToDto() )
+                .ToList() );
         }
 
         [HttpGet( "{id}" )]
@@ -58,11 +67,12 @@ namespace _6_WebApi.Controllers
                 createReservationRequest.DepartureDate,
                 createReservationRequest.GuestName,
                 createReservationRequest.GuestPhoneNumber );
-            if ( reservation != null )
+            if ( reservation == null )
             {
-                return Ok( reservation.ToDto() );
+                return BadRequest();
             }
-            return BadRequest();
+
+            return Ok( reservation.ToDto() );
         }
 
         [HttpGet( "search" )]
@@ -73,14 +83,15 @@ namespace _6_WebApi.Controllers
             int guests,
             double maxPrice )
         {
-            IEnumerable<ReservationSearchResponseDto> reservationSearchResponses = _reservatonService.Search( city, arrivalDate, departureDate, guests, maxPrice )
+            IEnumerable<ReservationSearchResponseDto> reservationSearchResponses =
+                _reservatonService.Search( city, arrivalDate, departureDate, guests, maxPrice )
                 .Select( r => r.ToDto() );
-            if ( reservationSearchResponses != null )
+            if ( reservationSearchResponses == null )
             {
-                return Ok( reservationSearchResponses );
+                return NotFound();
             }
 
-            return NotFound();
+            return Ok( reservationSearchResponses );
         }
     }
 }
